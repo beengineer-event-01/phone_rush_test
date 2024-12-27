@@ -290,7 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let graphtimer = window.setInterval(() => {
     // ここに追加
     displayData();
-  }, 200);
+  }, 500);
 
   // 描画する関数
   function displayData() {
