@@ -24,7 +24,7 @@ const course = [-5, 0, 5];
 let mixer;
 
 // エリアの設定
-const gravity = 0.05; // 重力
+const gravity = 0.01; // 重力
 
 let isOnce = false;
 let ios = true;
@@ -39,7 +39,7 @@ let helper;
 let player;
 let playerBox;
 let player_v_y = 0;
-const initial_velocity = 0.8;
+const initial_velocity = 0.5;
 let isJumping = false;
 let isMoving = false;
 let box_X;
@@ -175,16 +175,37 @@ glbloader.load(
   }
 )
 
+const enemy_position_list = [
+  [-5, -50],
+  [-4, -55],
+  [-3, -60],
+  [-2, -65],
+  [-1, -70],
+  [0, -75],
+  [1, -80],
+  [2, -85],
+
+]
+
 // 障害物の描画
-for (let g = 1; g < 12; g++) {
+for(let i = 0; i < enemy_position_list.length; i++){
   geometry = new ConeGeometry(1, 4, 32);
   sphereMaterial = new MeshPhongMaterial({ color: 0xff0000 });
   const model = new Mesh(geometry, sphereMaterial);
-  const randomIndex = Math.floor(Math.random() * 3);
-  model.position.set(course[randomIndex], 2, -15 * (g + 1));
+  model.position.set(enemy_position_list[i][0], 2, enemy_position_list[i][1]);
   enemy_list.push(model);
   scene.add(model);
 }
+
+// for (let g = 1; g < 12; g++) {
+//   geometry = new ConeGeometry(1, 4, 32);
+//   sphereMaterial = new MeshPhongMaterial({ color: 0xff0000 });
+//   const model = new Mesh(geometry, sphereMaterial);
+//   const randomIndex = Math.floor(Math.random() * 3);
+//   model.position.set(course[randomIndex], 2, -15 * (g + 1));
+//   enemy_list.push(model);
+//   scene.add(model);
+// }
 
 // 道の描画
 textureloader.load(
@@ -371,12 +392,12 @@ function collision() {
   playerBox.updateWorldMatrix(true, true);
   const playerBoundingBox = new Box3().setFromObject(playerBox);
   helper = new Box3Helper(playerBoundingBox, 0xff0000);
-  scene.add(helper);
+  // scene.add(helper);
 
   enemy_list = enemy_list.filter((enemy) => {
     const enemyBoundingBox = new Box3().setFromObject(enemy);
     helper = new Box3Helper(enemyBoundingBox, 0xff0000);
-    scene.add(helper);
+    // scene.add(helper);
 
     const isCollided = playerBoundingBox.intersectsBox(enemyBoundingBox);
     if(isCollided){
@@ -390,7 +411,7 @@ function collision() {
   phone_list = phone_list.filter((phone) => {
     const phoneBoundingBox = new Box3().setFromObject(phone);
     helper = new Box3Helper(phoneBoundingBox, 0xff0000);
-    scene.add(helper);
+    // scene.add(helper);
 
     const isCollided = playerBoundingBox.intersectsBox(phoneBoundingBox)
     if (isCollided) {
